@@ -2,7 +2,8 @@
   "name": "dy-graphs",
   "version": "0.0.1",
   "authors": [
-    "Uemit Seren <uemit.seren@gmail.com>"
+    "Uemit Seren <uemit.seren@gmail.com>",
+    "Sandro Kock <sandro.kock@gmail.com>"
   ],
   "description": "A Polymer wrapper for dygraphs",
   "keywords": [
@@ -20,11 +21,11 @@
     "/demo/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.0.0",
-    "dygraphs": "~1.1.1"
+    "polymer": "Polymer/polymer#v2.6.0",
+    "dygraphs": "danvk/dygraphs#v2.1.0"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "web-component-tester": "*"
+    "iron-component-page": "PolymerElements/iron-component-page#v3.0.1",
+    "web-component-tester": "Polymer/web-component-tester#v6.5.0"
   }
 }
