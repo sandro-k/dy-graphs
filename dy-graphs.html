@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
-<script src="../dygraphs/dygraph-combined.js"></script>
+<!--<script src="../dygraphs/dygraph-combined.js"></script>-->
+<script src="bower_components/dygraphs/dist/dygraph.js"></script>
 
 <!-- A simple Polymer wrapper around Dygraphs (http://dygraphs.com/)
 
@@ -22,9 +23,81 @@
 -->
 
 <dom-module id="dy-graphs">
-  <link rel="import" type="css" href="dy-graphs.css">
   <template>
-    <div id="chart" responsive$="{{responsive}}"></div>
+    <style>
+      :host {
+        display: block;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+      }
+
+      :host[responsive] {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+      }
+
+      #chart {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+      }
+
+      #chart[responsive] {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+      }
+
+      #legend {
+        font-size: 14px !important;
+        font-weight: 100 !important;
+        border: 1px dashed #CCC;
+        border-left: 0px;
+        border-right: 0px;
+        border-radius: 0px;
+
+      }
+
+      #legend span {
+        padding: 4px;
+        border: 1px solid #EEEEEE;
+        margin: 6px 12px;
+        border-radius: 0px;
+      }
+
+      #content {
+      }
+
+
+      #chart {
+      }
+
+      .chart-wrapper {
+        /*display: flex;*/
+      }
+    </style>
+    <div id="content">
+      <div id="legend"></div>
+      <div class="chart-wrapper">
+        <!--<div id="chart" style="max-height: 216px;" responsive$="{{responsive}}"></div>-->
+        <!--<div id="chart" responsive$="{{responsive}}"></div>-->
+        <div id="chart" responsive></div>
+      </div>
+    </div>
   </template>
   <script>
     Polymer({
@@ -61,6 +134,12 @@
         }
       },
 
+      listeners: {
+        'mouseenter': '_handleMouseenter',
+        'click': '_clicked',
+        'window-on-focus': '_onWindowFocus'
+      },
+
       _isReady: false,
 
       /**
@@ -68,38 +147,70 @@
        * Use this to access the dygraphs native API.
        * For more information, see http://dygraphs.com/jsdoc/symbols/Dygraph.html
        */
-      dygraph : null,
+      dygraph: null,
 
-      attached: function() {
-        this.async(function() {
-          this._isReady = true;
-          this.debounce('update',this._createOrUpdate);
-        },1);
+      windowEventListener: null,
+
+      _handleMouseenter: function (event) {},
+
+      _clicked: function (event) {},
+
+      attached: function () {
+        this.windowEventListener = this._onWindowFocus.bind(this)
+        window.addEventListener('window-on-focus', this.windowEventListener)
+
+        this.async(function () {
+          this._isReady = true
+          this.debounce('update', this._createOrUpdate)
+        }, 1)
       },
 
-       _debouceUpdateOptions: function(options) {
-          this.debounce('update',this._createOrUpdate);
-       },
-       _debounceUpdateData: function(data) {
-         if (this.dygraph !== null) {
-          this.options = this.options || {};
-          this.options.file = this.data;
-         }
-         this.debounce('update',this._createOrUpdate);
-       },
-      _createOrUpdate: function() {
-        this.cancelDebouncer('update');
-        if (!this._isReady)
-          return;
+      detached: function () {
+        window.removeEventListener('window-on-focus', this.windowEventListener)
+      },
+
+      _onWindowFocus: function (event) {
+        this.dygraph.resize(-1, -1)
+        this.dygraph.resize(0, 0)
+      },
+
+      _debouceUpdateOptions: function (options) {
+        this.options.labelsDiv = this.$.legend
+
+        this.debounce('update', this._createOrUpdate)
+      },
+
+      _debounceUpdateData: function (data) {
         if (this.dygraph !== null) {
-          if (this.data != null){
-            this.options.file = this.data;
-          }
-          this.dygraph.updateOptions(this.options);
-        } else if(this.data) {
-          this.dygraph = new Dygraph(this.$.chart,this.data,this.options);
+          this.options = this.options || {}
+          this.options.file = this.data
         }
+        this.debounce('update', this._createOrUpdate)
       },
-    });
+
+      _createOrUpdate: function () {
+        this.cancelDebouncer('update')
+        if (!this._isReady)
+          return
+        if (this.dygraph !== null) {
+
+          if (this.data != null) {
+            if (this.data[this.data.length - 1] instanceof Date) {
+              console.log('_createOrUpdate.file', this.data)
+              console.trace()
+            }
+            this.options.file = this.data
+          }
+          this.dygraph.updateOptions(this.options)
+        } else if (this.data) {
+          this.dygraph = new Dygraph(this.$.chart, this.data, this.options)
+        }
+
+        this.dygraph.ready(function (dygraph) {
+          dygraph.resize(-1, -1)
+          dygraph.resize(0, 0)
+        })
+      },
+    })
   </script>
 </dom-module>
