@@ -88,7 +88,6 @@
          this.debounce('update',this._createOrUpdate);
        },
       _createOrUpdate: function() {
-//        console.log("_createOrUpdate");
         this.cancelDebouncer('update');
         if (!this._isReady)
           return;
