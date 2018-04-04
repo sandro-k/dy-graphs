@@ -263,7 +263,7 @@
         this.async(function () {
           this._isReady = true
           this.debounce('update', this._createOrUpdate)
-        }, 1)
+        }, 100)
       },
 
       detached: function () {
