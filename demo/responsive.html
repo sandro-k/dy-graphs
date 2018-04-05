@@ -9,14 +9,15 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>dy-graphs Demo</title>
-    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-    <link rel="import" href="../dy-graphs.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>dy-graphs Demo</title>
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <link rel="import" href="../dy-graphs.html">
+  <custom-style>
     <style>
-      html, body{
+      html, body {
         margin: 0;
         padding: 0;
         height: 100%;
@@ -30,16 +31,57 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       dy-graphs {
+        --dy-graphs: {
+          display: -ms-flexbox;
+          display: -webkit-box;
+          display: flex;
+          -ms-flex: 1;
+          -webkit-box-flex: 1;
+          flex: 1;
+        };
 
+        --dy-graphs-chart-content: {
+          display: -webkit-flex;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+          flex-direction: column;
+        };
+
+        --dy-graphs-chart: {
+          display: -ms-flexbox;
+          display: -webkit-box;
+          display: flex;
+          -ms-flex: 1;
+          -webkit-box-flex: 1;
+          flex: 1;
+        };
+
+        --dy-graphs-chart-wrapper: {
+          display: -ms-flexbox;
+          display: -webkit-box;
+          display: flex;
+          -ms-flex: 1;
+          -webkit-box-flex: 1;
+          flex: 1;
+        };
       }
     </style>
-  </head>
-  <body>
+  </custom-style>
+</head>
+<body>
 
-    <div class="container">
-      <p>An example of <code>&lt;dy-graphs&gt;</code>:</p>
-      <dy-graphs data="ny-vs-sf.txt" options='{"legend": "always","title": "NYC vs. SF","showRoller": "true","rollPeriod": "14","customBars": "true","ylabel": "Temperature (F)"}' responsive></dy-graphs>
-    </div>
+<div class="container">
+  <p>An example of <code>&lt;dy-graphs&gt;</code>:</p>
+  <dy-graphs data="ny-vs-sf.txt"
+             options='{"legend": "always","title": "NYC vs. SF","showRoller": "true","rollPeriod": "14","customBars": "true","ylabel": "Temperature (F)"}'
+             responsive></dy-graphs>
+</div>
 
-  </body>
+</body>
 </html>
