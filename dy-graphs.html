@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
-<script src="dygraphs/dygraph.js"></script>
+<link rel="import" href="dygraphs.html">
+
 
 <!-- A simple Polymer wrapper around Dygraphs (http://dygraphs.com/)
 
@@ -26,24 +27,10 @@
     <style>
       :host {
         display: block;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-
         @apply --dy-graphs;
       }
 
       #chart {
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-
         @apply --dy-graphs-chart;
       }
 
@@ -63,7 +50,6 @@
         border: 1px solid #EEEEEE;
         margin: 6px 12px;
         border-radius: 0px;
-
         @apply --dy-graphs-chart-legend-item;
       }
 
@@ -252,8 +238,10 @@
 
       windowEventListener: null,
 
+      /* default handler */
       _handleMouseenter: function (event) {},
 
+      /* default handler */
       _clicked: function (event) {},
 
       attached: function () {
@@ -270,18 +258,21 @@
         window.removeEventListener('window-on-focus', this.windowEventListener)
       },
 
-      _onWindowFocus: function (event) {
+      _onWindowFocus: function () {
+        this._resizeDyGraph()
+      },
+
+      _resizeDyGraph: function () {
         this.dygraph.resize(-1, -1)
         this.dygraph.resize(0, 0)
       },
 
-      _debouceUpdateOptions: function (options) {
+      _debouceUpdateOptions: function () {
         this.options.labelsDiv = this.$.legend
-
         this.debounce('update', this._createOrUpdate)
       },
 
-      _debounceUpdateData: function (data) {
+      _debounceUpdateData: function () {
         if (this.dygraph !== null) {
           this.options = this.options || {}
           this.options.file = this.data
@@ -311,7 +302,7 @@
           dygraph.resize(-1, -1)
           dygraph.resize(0, 0)
         })
-      },
+      }
     })
   </script>
 </dom-module>
