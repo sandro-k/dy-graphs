@@ -1,0 +1,12 @@
+{
+  "verbose": true,
+  "watch": [
+    "dy-graphs.html",
+    "dygraphs.html",
+    "demo/*"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "html"
+}
