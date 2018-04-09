@@ -71,6 +71,18 @@ See the [component page](http://timeu.github.io/dy-graphs) for more information.
 --- | --- | --- | --- | --- |
 IE 10+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
+## Development
+
+``
+git clone https://github.com/sandro-k/dy-graphs.git
+cd dy-graphs
+npm run init
+npm run dev
+``
+
+Browse to http://127.0.0.1:8000/components/dy-graphs/ to preview the element documentation. To have [Browsersync](https://browsersync.io/) support, while developing on the element open up
+[http://localhost:3000/components/dy-graphs/](http://localhost:3000/components/dy-graphs/)
+
 ## Contributing
 
 1. Fork it!
