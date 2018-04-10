@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="dygraphs.html">
 
 <!-- A Polymer wrapper around Dygraphs (http://dygraphs.com/)
@@ -222,10 +223,15 @@
         }
       },
 
+      behaviors: [
+        Polymer.IronResizableBehavior
+      ],
+
       listeners: {
         'mouseenter': '_handleMouseenter',
         'click': '_clicked',
-        'window-on-focus': '_onWindowFocus'
+        'window-on-focus': '_onWindowFocus',
+        'iron-resize': '_onIronResize'
       },
 
       _isReady: false,
@@ -237,7 +243,6 @@
        */
       dygraph: null,
 
-      windowEventListener: null,
 
       /* default handler */
       _handleMouseenter: function (event) {},
@@ -245,27 +250,46 @@
       /* default handler */
       _clicked: function (event) {},
 
+      get parent () {
+        if (this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+          return this.parentNode.host
+        }
+        return this.parentNode
+      },
+
+      _checkParentSize: function () {
+        return this.parent && this.parent.offsetWidth > 0 && this.parent.offsetHeight > 0
+      },
+
+      _onIronResize: function() {
+        console.log('_onIronResize', this.parent.offsetWidth, this.parent.offsetHeight)
+        if (this._checkParentSize()){
+          this._resizeDyGraph()
+          this.debounce('update', this._createOrUpdate)
+        }
+      },
+
       attached: function () {
-        this.windowEventListener = this._onWindowFocus.bind(this)
-        window.addEventListener('window-on-focus', this.windowEventListener)
+        this.async(this.notifyResize, 1)
 
         this.async(function () {
           this._isReady = true
           this.debounce('update', this._createOrUpdate)
-        }, 100)
+        }, 10)
       },
 
       detached: function () {
-        window.removeEventListener('window-on-focus', this.windowEventListener)
       },
 
       _onWindowFocus: function () {
-        this._resizeDyGraph()
+        // this._resizeDyGraph()
       },
 
       _resizeDyGraph: function () {
-        this.dygraph.resize(-1, -1)
-        this.dygraph.resize(0, 0)
+        if (this.dygraph){
+          this.dygraph.resize(-1, -1)
+          this.dygraph.resize(0, 0)
+        }
       },
 
       _debouceUpdateOptions: function () {
@@ -283,8 +307,9 @@
 
       _createOrUpdate: function () {
         this.cancelDebouncer('update')
-        if (!this._isReady)
+        if (!this._isReady) {
           return
+        }
         if (this.dygraph !== null) {
 
           if (this.data != null) {
@@ -295,14 +320,16 @@
             this.options.file = this.data
           }
           this.dygraph.updateOptions(this.options)
-        } else if (this.data) {
+        } else if (this.data && this._checkParentSize()) {
           this.dygraph = new Dygraph(this.$.chart, this.data, this.options)
         }
 
-        this.dygraph.ready(function (dygraph) {
-          dygraph.resize(-1, -1)
-          dygraph.resize(0, 0)
-        })
+        if (this.dygraph){
+          this.dygraph.ready(function (dygraph) {
+            dygraph.resize(-1, -1)
+            dygraph.resize(0, 0)
+          })
+        }
       }
     })
   </script>
