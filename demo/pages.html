@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>dy-graphs pages</title>
+  <link rel="import" href="../../iron-pages/iron-pages.html">
+  <link rel="import" href="../dy-graphs.html">
+  <style>
+    .one {
+      background: lightblue;
+    }
+
+    .two {
+      background: lightgreen;
+    }
+
+    .three {
+      background: lightcoral;
+    }
+  </style>
+</head>
+<body>
+<button id="next">Next</button>
+<iron-pages selected="0">
+  <section class="one">
+    <dy-graphs data="ny-vs-sf.txt"
+               options='{"legend": "always","title": "NYC vs. SF","showRoller": "true","rollPeriod": "14","customBars": "true","ylabel": "Temperature (F)"}'
+               responsive></dy-graphs>
+  </section>
+  <section class="two">
+    <dy-graphs data="ny-vs-sf.txt"
+               options='{"legend": "always","title": "NYC vs. SF","showRoller": "true","rollPeriod": "14","customBars": "true","ylabel": "Temperature (F)"}'
+               responsive></dy-graphs>
+  </section>
+  <section class="three">
+    <dy-graphs data="ny-vs-sf.txt"
+               options='{"legend": "always","title": "NYC vs. SF","showRoller": "true","rollPeriod": "14","customBars": "true","ylabel": "Temperature (F)"}'
+               responsive></dy-graphs>
+  </section>
+</iron-pages>
+
+<script>
+  let pages = document.querySelector('iron-pages')
+  let nextBtn = document.querySelector('#next')
+  nextBtn.addEventListener('click', pages.selectNext.bind(pages))
+</script>
+
+</body>
+</html>
