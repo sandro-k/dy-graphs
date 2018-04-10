@@ -54,12 +54,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         };
 
         --dy-graphs-chart: {
-          display: -ms-flexbox;
-          display: -webkit-box;
-          display: flex;
-          -ms-flex: 1;
-          -webkit-box-flex: 1;
-          flex: 1;
+          /* position absolute is needed to fill the parent and dygraphs is able to calc the width and height*/
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
         };
 
         --dy-graphs-chart-wrapper: {
@@ -69,6 +69,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           -ms-flex: 1;
           -webkit-box-flex: 1;
           flex: 1;
+          /* position relative is needed so that dygraphs fills this wrapper*/
+          position: relative;
         };
       }
     </style>
