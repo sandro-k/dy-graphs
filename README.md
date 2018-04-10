@@ -26,9 +26,9 @@ Or [download as ZIP](https://github.com/timeu/dy-graphs/archive/master.zip).
 
 2. Import Custom Element:
 
-  ```html
+```html
 <link rel="import" href="bower_components/dy-graphs/dy-graphs.html">
-  ```
+```
 
 3. Start using it!
 
@@ -52,13 +52,13 @@ Or [download as ZIP](https://github.com/timeu/dy-graphs/archive/master.zip).
 
   Interact with dygraph object directly:
 
-   ```html
+```html
     <dygraphs id="graph"></dygraphs>
     <script>
       var g = document.querySelector('#graph');
       g.dygraph.resetZoom();
     </script>
-    ```
+```
 
 ## Options
 
@@ -71,14 +71,14 @@ See the [component page](http://timeu.github.io/dy-graphs) for more information.
 --- | --- | --- | --- | --- |
 IE 10+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
-## Development
 
-``
+## Development
+```
 git clone https://github.com/sandro-k/dy-graphs.git
 cd dy-graphs
 npm run init
 npm run dev
-``
+```
 
 Browse to http://127.0.0.1:8000/components/dy-graphs/ to preview the element documentation. To have [Browsersync](https://browsersync.io/) support, while developing on the element open up
 [http://localhost:3000/components/dy-graphs/](http://localhost:3000/components/dy-graphs/)
