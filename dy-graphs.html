@@ -270,6 +270,9 @@
       },
 
       detached: function () {
+        if (this.dygraph){
+          this.dygraph.destroy()
+        }
       },
 
       _onWindowFocus: function () {
