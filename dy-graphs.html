@@ -189,142 +189,149 @@
     </div>
   </template>
   <script>
-    Polymer({
+    'use strict';
 
-      is: 'dy-graphs',
+    (function (scope) {
+      let DyGraphsElements = scope.DyGraphsElements = scope.DyGraphsElements || {};
 
-      properties: {
-        /**
-         * Options for configuring Dygraphs display and beheavior.
-         * For more information, see http://dygraphs.com/options.html
-         */
-        options: {
-          type: Object,
-          observer: '_debouceUpdateOptions'
+      DyGraphsElements.DyGraphs = Polymer({
+
+        is: 'dy-graphs',
+
+        properties: {
+          /**
+           * Options for configuring Dygraphs display and beheavior.
+           * For more information, see http://dygraphs.com/options.html
+           */
+          options: {
+            type: Object,
+            observer: '_debouceUpdateOptions'
+          },
+
+          /**
+           * A file containing CSV data or a function that returns this data.
+           * The most basic expected format for each line is "YYYY/MM/DD,val1,val2,...".
+           * For more information, see http://dygraphs.com/data.html.
+           */
+          data: {
+            type: Object,
+            observer: '_debounceUpdateData'
+          }
         },
 
+        behaviors: [
+          Polymer.IronResizableBehavior
+        ],
+
+        listeners: {
+          'mouseenter': '_handleMouseenter',
+          'click': '_clicked',
+          'window-on-focus': '_onWindowFocus',
+          'iron-resize': '_onIronResize'
+        },
+
+        _isReady: false,
+
         /**
-         * A file containing CSV data or a function that returns this data.
-         * The most basic expected format for each line is "YYYY/MM/DD,val1,val2,...".
-         * For more information, see http://dygraphs.com/data.html.
+         * The underlying Dygraphs object.
+         * Use this to access the dygraphs native API.
+         * For more information, see http://dygraphs.com/jsdoc/symbols/Dygraph.html
          */
-        data: {
-          type: Object,
-          observer: '_debounceUpdateData'
-        }
-      },
-
-      behaviors: [
-        Polymer.IronResizableBehavior
-      ],
-
-      listeners: {
-        'mouseenter': '_handleMouseenter',
-        'click': '_clicked',
-        'window-on-focus': '_onWindowFocus',
-        'iron-resize': '_onIronResize'
-      },
-
-      _isReady: false,
-
-      /**
-       * The underlying Dygraphs object.
-       * Use this to access the dygraphs native API.
-       * For more information, see http://dygraphs.com/jsdoc/symbols/Dygraph.html
-       */
-      dygraph: null,
+        dygraph: null,
 
 
-      /* default handler */
-      _handleMouseenter: function (event) {},
+        /* default handler */
+        _handleMouseenter: function (event) {},
 
-      /* default handler */
-      _clicked: function (event) {},
+        /* default handler */
+        _clicked: function (event) {},
 
-      get parent () {
-        if (this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-          return this.parentNode.host
-        }
-        return this.parentNode
-      },
+        get parent () {
+          if (this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+            return this.parentNode.host
+          }
+          return this.parentNode
+        },
 
-      _checkParentSize: function () {
-        return this.parent && this.parent.offsetWidth > 0 && this.parent.offsetHeight > 0
-      },
+        _checkParentSize: function () {
+          return this.parent && this.parent.offsetWidth > 0 && this.parent.offsetHeight > 0
+        },
 
-      _onIronResize: function() {
-        console.log('_onIronResize', this.parent.offsetWidth, this.parent.offsetHeight)
-        if (this._checkParentSize()){
-          this._resizeDyGraph()
+        _onIronResize: function() {
+          console.log('_onIronResize', this.parent.offsetWidth, this.parent.offsetHeight)
+          if (this._checkParentSize()){
+            this._resizeDyGraph()
+            this.debounce('update', this._createOrUpdate)
+          }
+        },
+
+        attached: function () {
+          this.async(this.notifyResize, 1)
+
+          this.async(function () {
+            this._isReady = true
+            this.debounce('update', this._createOrUpdate)
+          }, 10)
+        },
+
+        detached: function () {
+          if (this.dygraph){
+            this.dygraph.destroy()
+          }
+        },
+
+        _onWindowFocus: function () {
+          // this._resizeDyGraph()
+        },
+
+        _resizeDyGraph: function () {
+          if (this.dygraph){
+            this.dygraph.resize(-1, -1)
+            this.dygraph.resize(0, 0)
+          }
+        },
+
+        _debouceUpdateOptions: function () {
+          this.options.labelsDiv = this.$.legend
           this.debounce('update', this._createOrUpdate)
-        }
-      },
+        },
 
-      attached: function () {
-        this.async(this.notifyResize, 1)
-
-        this.async(function () {
-          this._isReady = true
-          this.debounce('update', this._createOrUpdate)
-        }, 10)
-      },
-
-      detached: function () {
-        if (this.dygraph){
-          this.dygraph.destroy()
-        }
-      },
-
-      _onWindowFocus: function () {
-        // this._resizeDyGraph()
-      },
-
-      _resizeDyGraph: function () {
-        if (this.dygraph){
-          this.dygraph.resize(-1, -1)
-          this.dygraph.resize(0, 0)
-        }
-      },
-
-      _debouceUpdateOptions: function () {
-        this.options.labelsDiv = this.$.legend
-        this.debounce('update', this._createOrUpdate)
-      },
-
-      _debounceUpdateData: function () {
-        if (this.dygraph !== null) {
-          this.options = this.options || {}
-          this.options.file = this.data
-        }
-        this.debounce('update', this._createOrUpdate)
-      },
-
-      _createOrUpdate: function () {
-        this.cancelDebouncer('update')
-        if (!this._isReady) {
-          return
-        }
-        if (this.dygraph !== null) {
-
-          if (this.data != null) {
-            if (this.data[this.data.length - 1] instanceof Date) {
-              console.log('_createOrUpdate.file', this.data)
-              console.trace()
-            }
+        _debounceUpdateData: function () {
+          if (this.dygraph !== null) {
+            this.options = this.options || {}
             this.options.file = this.data
           }
-          this.dygraph.updateOptions(this.options)
-        } else if (this.data && this._checkParentSize()) {
-          this.dygraph = new Dygraph(this.$.chart, this.data, this.options)
-        }
+          this.debounce('update', this._createOrUpdate)
+        },
 
-        if (this.dygraph){
-          this.dygraph.ready(function (dygraph) {
-            dygraph.resize(-1, -1)
-            dygraph.resize(0, 0)
-          })
+        _createOrUpdate: function () {
+          this.cancelDebouncer('update')
+          if (!this._isReady) {
+            return
+          }
+          if (this.dygraph !== null) {
+
+            if (this.data != null) {
+              if (this.data[this.data.length - 1] instanceof Date) {
+                console.log('_createOrUpdate.file', this.data)
+                console.trace()
+              }
+              this.options.file = this.data
+            }
+            this.dygraph.updateOptions(this.options)
+          } else if (this.data && this._checkParentSize()) {
+            this.dygraph = new Dygraph(this.$.chart, this.data, this.options)
+          }
+
+          if (this.dygraph){
+            this.dygraph.ready(function (dygraph) {
+              dygraph.resize(-1, -1)
+              dygraph.resize(0, 0)
+            })
+          }
         }
-      }
-    })
+      })
+    })(window)
+
   </script>
 </dom-module>
