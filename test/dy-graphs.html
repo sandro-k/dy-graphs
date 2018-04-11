@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../bower_components/web-component-tester/browser.js"></script>
+  <script src="../bower_components/test-fixture/test-fixture-mocha.js"></script>
+
+  <link rel="import" href="../bower_components/test-fixture/test-fixture.html">
+  <link rel="import" href="../dy-graphs.html">
+</head>
+<body>
+<test-fixture id="fixture">
+  <template>
+    <dy-graphs></dy-graphs>
+  </template>
+</test-fixture>
+<script>
+  suite('<dy-graphs>', () => {
+    let el
+
+    suite('properties', () => {
+      setup(() => {
+        el = fixture('fixture')
+      })
+
+      test('has propety data', () => {
+        assert.property(el.properties, 'data')
+      })
+
+      test('has propety options', () => {
+        assert.property(el.properties, 'options')
+      })
+    })
+
+    suite('attached', () => {
+        test('calls notifyResize', () => {
+          let sandbox = sinon.sandbox.create()
+          sandbox.stub(DyGraphsElements.DyGraphs.prototype, "notifyResize")
+          el = fixture('fixture')
+          sinon.assert.calledOnce(DyGraphsElements.DyGraphs.prototype.notifyResize);
+          sandbox.restore()
+        })
+    })
+
+  })
+</script>
+</body>
+</html>
