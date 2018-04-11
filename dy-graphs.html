@@ -270,6 +270,7 @@
 
           this.async(function () {
             this._isReady = true
+            this.fire('dy-graphs-ready')
             this.debounce('update', this._createOrUpdate)
           }, 10)
         },
