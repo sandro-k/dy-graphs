@@ -226,7 +226,6 @@
         listeners: {
           'mouseenter': '_handleMouseenter',
           'click': '_clicked',
-          'window-on-focus': '_onWindowFocus',
           'iron-resize': '_onIronResize'
         },
 
@@ -281,10 +280,6 @@
           }
         },
 
-        _onWindowFocus: function () {
-          // this._resizeDyGraph()
-        },
-
         _resizeDyGraph: function () {
           if (this.dygraph){
             this.dygraph.resize(-1, -1)
@@ -333,6 +328,5 @@
         }
       })
     })(window)
-
   </script>
 </dom-module>
