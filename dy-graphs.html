@@ -192,7 +192,7 @@
     'use strict';
 
     (function (scope) {
-      let DyGraphsElements = scope.DyGraphsElements = scope.DyGraphsElements || {};
+      let DyGraphsElements = scope.DyGraphsElements = scope.DyGraphsElements || {}
 
       DyGraphsElements.DyGraphs = Polymer({
 
@@ -214,9 +214,16 @@
            * For more information, see http://dygraphs.com/data.html.
            */
           data: {
-            type: Object,
-            observer: '_debounceUpdateData'
+            type: Object
           }
+        },
+
+        observers: [
+          '_dataChanged(data.splices)'
+        ],
+
+        _dataChanged: function () {
+          this._debounceUpdateData()
         },
 
         behaviors: [
@@ -238,7 +245,6 @@
          */
         dygraph: null,
 
-
         /* default handler */
         _handleMouseenter: function (event) {},
 
@@ -246,7 +252,7 @@
         _clicked: function (event) {},
 
         get parent () {
-          if (this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+          if (this.parentNode && this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
             return this.parentNode.host
           }
           return this.parentNode
@@ -256,8 +262,8 @@
           return this.parent && this.parent.offsetWidth > 0 && this.parent.offsetHeight > 0
         },
 
-        _onIronResize: function() {
-          if (this._checkParentSize()){
+        _onIronResize: function () {
+          if (this._checkParentSize()) {
             this._resizeDyGraph()
             this.debounce('update', this._createOrUpdate)
           }
@@ -274,27 +280,32 @@
         },
 
         detached: function () {
-          if (this.dygraph){
+          console.log('detached', arguments)
+          if (this.dygraph) {
             this.dygraph.destroy()
           }
         },
 
         _resizeDyGraph: function () {
-          if (this.dygraph){
+          if (this.dygraph) {
             this.dygraph.resize(-1, -1)
             this.dygraph.resize(0, 0)
           }
         },
 
+        _setOptionAttribute: function (key, value) {
+          this.options = this.options || {}
+          this.options[key] = value
+        },
+
         _debouceUpdateOptions: function () {
-          this.options.labelsDiv = this.$.legend
+          this._setOptionAttribute('labelsDiv', this.$.legend)
           this.debounce('update', this._createOrUpdate)
         },
 
         _debounceUpdateData: function () {
           if (this.dygraph !== null) {
-            this.options = this.options || {}
-            this.options.file = this.data
+            this._setOptionAttribute('file', this.data)
           }
           this.debounce('update', this._createOrUpdate)
         },
@@ -311,14 +322,15 @@
                 console.log('_createOrUpdate.file', this.data)
                 console.trace()
               }
-              this.options.file = this.data
+              this._setOptionAttribute('file', this.data)
             }
             this.dygraph.updateOptions(this.options)
           } else if (this.data && this._checkParentSize()) {
             this.dygraph = new Dygraph(this.$.chart, this.data, this.options)
+            this.fire('dy-graphs-created', {dygraph: this.dygraph})
           }
 
-          if (this.dygraph){
+          if (this.dygraph) {
             this.dygraph.ready(function (dygraph) {
               dygraph.resize(-1, -1)
               dygraph.resize(0, 0)
