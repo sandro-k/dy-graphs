@@ -318,10 +318,6 @@
           if (this.dygraph !== null) {
 
             if (this.data !== null) {
-              if (this.data[this.data.length - 1] instanceof Date) {
-                console.log('_createOrUpdate.file', this.data)
-                console.trace()
-              }
               this._setOptionAttribute('file', this.data)
             }
             this.dygraph.updateOptions(this.options)
