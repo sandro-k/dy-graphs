@@ -257,7 +257,6 @@
         },
 
         _onIronResize: function() {
-          console.log('_onIronResize', this.parent.offsetWidth, this.parent.offsetHeight)
           if (this._checkParentSize()){
             this._resizeDyGraph()
             this.debounce('update', this._createOrUpdate)
