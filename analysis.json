@@ -2,55 +2,10 @@
   "schema_version": "1.0.0",
   "elements": [
     {
-      "description": "A Polymer wrapper around Dygraphs (http://dygraphs.com/)\n\n  Example with static parameters:\n\n    <dy-graphs data=\"data.csv\" options='{\"legend\": \"always\",\"title\": \"MyTitle\"}'></dy-graphs>\n\n  Example with data-binding:\n\n    <dy-graphs data=\"{{data}}\" options=\"{{options}}\"></dygraphs>\n\n  Interact with dygraph object directly:\n\n    <dygraphs id=\"graph\"></dygraphs>\n    <script>\n      var g = document.querySelector('#graph');\n      g.dygraph.resetZoom();\n    </script>",
+      "description": "A Polymer wrapper around Dygraphs (http://dygraphs.com/)\n\n  Example with static parameters:\n\n    <dy-graphs data=\"data.csv\" options='{\"legend\": \"always\",\"title\": \"MyTitle\"}'></dy-graphs>\n\n  Example with data-binding:\n\n    <dy-graphs data=\"{{data}}\" options=\"{{options}}\"></dygraphs>\n\n  Interact with dygraph object directly:\n\n    <dygraphs id=\"graph\"></dygraphs>\n    <script>\n      var g = document.querySelector('#graph');\n      g.dygraph.resetZoom();\n    </script>\n\nclass DyGraphs extends Polymer.Element {",
       "summary": "",
       "path": "dy-graphs.html",
       "properties": [
-        {
-          "name": "_parentResizable",
-          "type": "Object",
-          "description": "The closest ancestor element that implements `IronResizableBehavior`.",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 36,
-              "column": 6
-            },
-            "end": {
-              "line": 39,
-              "column": 7
-            }
-          },
-          "metadata": {
-            "polymer": {
-              "observer": "\"_parentResizableChanged\""
-            }
-          },
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "_notifyingDescendant",
-          "type": "boolean",
-          "description": "True if this element is currently notifying its descendant elements of\nresize.",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 45,
-              "column": 6
-            },
-            "end": {
-              "line": 48,
-              "column": 7
-            }
-          },
-          "metadata": {
-            "polymer": {}
-          },
-          "defaultValue": "false",
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
         {
           "name": "options",
           "type": "Object",
@@ -58,12 +13,12 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 205,
-              "column": 10
+              "line": 208,
+              "column": 12
             },
             "end": {
-              "line": 208,
-              "column": 11
+              "line": 211,
+              "column": 13
             }
           },
           "metadata": {
@@ -79,414 +34,36 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 215,
-              "column": 10
+              "line": 218,
+              "column": 12
             },
             "end": {
-              "line": 217,
-              "column": 11
+              "line": 220,
+              "column": 13
             }
           },
           "metadata": {
             "polymer": {}
-          }
-        },
-        {
-          "name": "_isReady",
-          "type": "boolean",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 238,
-              "column": 8
-            },
-            "end": {
-              "line": 238,
-              "column": 23
-            }
-          },
-          "metadata": {
-            "polymer": {}
-          }
-        },
-        {
-          "name": "dygraph",
-          "type": "object",
-          "description": "The underlying Dygraphs object.\nUse this to access the dygraphs native API.\nFor more information, see http://dygraphs.com/jsdoc/symbols/Dygraph.html",
-          "privacy": "public",
-          "sourceRange": {
-            "start": {
-              "line": 245,
-              "column": 8
-            },
-            "end": {
-              "line": 245,
-              "column": 21
-            }
-          },
-          "metadata": {
-            "polymer": {}
-          }
-        },
-        {
-          "name": "parent",
-          "type": "Function",
-          "description": "",
-          "privacy": "public",
-          "sourceRange": {
-            "start": {
-              "line": 253,
-              "column": 8
-            },
-            "end": {
-              "line": 272,
-              "column": 9
-            }
-          },
-          "metadata": {
-            "polymer": {
-              "readOnly": false
-            }
           }
         }
       ],
       "methods": [
-        {
-          "name": "created",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 55,
-              "column": 4
-            },
-            "end": {
-              "line": 60,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "attached",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 285,
-              "column": 8
-            },
-            "end": {
-              "line": 293,
-              "column": 9
-            }
-          },
-          "metadata": {},
-          "params": []
-        },
-        {
-          "name": "detached",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 295,
-              "column": 8
-            },
-            "end": {
-              "line": 299,
-              "column": 9
-            }
-          },
-          "metadata": {},
-          "params": []
-        },
-        {
-          "name": "notifyResize",
-          "description": "Can be called to manually notify a resizable and its descendant\nresizables of a resize change.",
-          "privacy": "public",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 80,
-              "column": 4
-            },
-            "end": {
-              "line": 92,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "assignParentResizable",
-          "description": "Used to assign the closest resizable ancestor to this resizable\nif the ancestor detects a request for notifications.",
-          "privacy": "public",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 98,
-              "column": 4
-            },
-            "end": {
-              "line": 100,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "parentResizable"
-            }
-          ],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "stopResizeNotificationsFor",
-          "description": "Used to remove a resizable descendant from the list of descendants\nthat should be notified of a resize change.",
-          "privacy": "public",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 106,
-              "column": 4
-            },
-            "end": {
-              "line": 113,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "target"
-            }
-          ],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "resizerShouldNotify",
-          "description": "This method can be overridden to filter nested elements that should or\nshould not be notified by the current element. Return true if an element\nshould be notified, or false if it should not be notified.",
-          "privacy": "public",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 124,
-              "column": 4
-            },
-            "end": {
-              "line": 124,
-              "column": 59
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "element",
-              "type": "HTMLElement",
-              "description": "A candidate descendant element that\nimplements `IronResizableBehavior`."
-            }
-          ],
-          "return": {
-            "type": "boolean",
-            "desc": "True if the `element` should be notified of resize."
-          },
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "_onDescendantIronResize",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 126,
-              "column": 4
-            },
-            "end": {
-              "line": 138,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "event"
-            }
-          ],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "_fireResize",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 140,
-              "column": 4
-            },
-            "end": {
-              "line": 145,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "_onIronRequestResizeNotifications",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 147,
-              "column": 4
-            },
-            "end": {
-              "line": 162,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "event"
-            }
-          ],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "_parentResizableChanged",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 164,
-              "column": 4
-            },
-            "end": {
-              "line": 168,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "parentResizable"
-            }
-          ],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "_notifyDescendant",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 170,
-              "column": 4
-            },
-            "end": {
-              "line": 181,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "descendant"
-            }
-          ],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
-        {
-          "name": "_requestResizeNotifications",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "file": "bower_components/iron-resizable-behavior/iron-resizable-behavior.html",
-            "start": {
-              "line": 183,
-              "column": 4
-            },
-            "end": {
-              "line": 211,
-              "column": 5
-            }
-          },
-          "metadata": {},
-          "params": [],
-          "inheritedFrom": "Polymer.IronResizableBehavior"
-        },
         {
           "name": "_dataChanged",
           "description": "",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 224,
+              "line": 230,
               "column": 8
             },
             "end": {
-              "line": 226,
+              "line": 232,
               "column": 9
             }
           },
           "metadata": {},
           "params": []
-        },
-        {
-          "name": "_handleMouseenter",
-          "description": "default handler",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 248,
-              "column": 8
-            },
-            "end": {
-              "line": 248,
-              "column": 46
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "event"
-            }
-          ]
-        },
-        {
-          "name": "_clicked",
-          "description": "default handler",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 251,
-              "column": 8
-            },
-            "end": {
-              "line": 251,
-              "column": 37
-            }
-          },
-          "metadata": {},
-          "params": [
-            {
-              "name": "event"
-            }
-          ]
         },
         {
           "name": "_checkParentSize",
@@ -494,11 +71,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 274,
+              "line": 281,
               "column": 8
             },
             "end": {
-              "line": 276,
+              "line": 283,
               "column": 9
             }
           },
@@ -511,11 +88,45 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 278,
+              "line": 285,
               "column": 8
             },
             "end": {
-              "line": 283,
+              "line": 290,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "connectedCallback",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 292,
+              "column": 8
+            },
+            "end": {
+              "line": 301,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "disconnectedCallback",
+          "description": "",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 303,
+              "column": 8
+            },
+            "end": {
+              "line": 308,
               "column": 9
             }
           },
@@ -528,11 +139,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 301,
+              "line": 310,
               "column": 8
             },
             "end": {
-              "line": 306,
+              "line": 315,
               "column": 9
             }
           },
@@ -545,11 +156,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 308,
+              "line": 317,
               "column": 8
             },
             "end": {
-              "line": 311,
+              "line": 320,
               "column": 9
             }
           },
@@ -569,11 +180,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 313,
+              "line": 322,
               "column": 8
             },
             "end": {
-              "line": 316,
+              "line": 325,
               "column": 9
             }
           },
@@ -586,11 +197,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 318,
+              "line": 327,
               "column": 8
             },
             "end": {
-              "line": 323,
+              "line": 332,
               "column": 9
             }
           },
@@ -603,11 +214,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 325,
+              "line": 334,
               "column": 8
             },
             "end": {
-              "line": 344,
+              "line": 353,
               "column": 9
             }
           },
@@ -629,29 +240,29 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 196,
-          "column": 42
+          "line": 195,
+          "column": 6
         },
         "end": {
-          "line": 345,
+          "line": 354,
           "column": 7
         }
       },
       "privacy": "public",
       "superclass": "HTMLElement",
-      "name": "DyGraphsElements.DyGraphs",
+      "name": "DyGraphs",
       "attributes": [
         {
           "name": "options",
           "description": "Options for configuring Dygraphs display and beheavior.\nFor more information, see http://dygraphs.com/options.html",
           "sourceRange": {
             "start": {
-              "line": 205,
-              "column": 10
+              "line": 208,
+              "column": 12
             },
             "end": {
-              "line": 208,
-              "column": 11
+              "line": 211,
+              "column": 13
             }
           },
           "metadata": {},
@@ -662,12 +273,12 @@
           "description": "A file containing CSV data or a function that returns this data.\nThe most basic expected format for each line is \"YYYY/MM/DD,val1,val2,...\".\nFor more information, see http://dygraphs.com/data.html.",
           "sourceRange": {
             "start": {
-              "line": 215,
-              "column": 10
+              "line": 218,
+              "column": 12
             },
             "end": {
-              "line": 217,
-              "column": 11
+              "line": 220,
+              "column": 13
             }
           },
           "metadata": {},
