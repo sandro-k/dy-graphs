@@ -16,8 +16,7 @@
   "license": "http://polymer.github.io/LICENSE.txt",
   "homepage": "https://github.com/timeu/dy-graphs/",
   "ignore": [
-    "/.*",
-    "/test/"
+    "/.*"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#v2.6.0",
