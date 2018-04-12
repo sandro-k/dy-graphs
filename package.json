@@ -11,6 +11,7 @@
     "dev": "concurrently --kill-others 'npm run analysis-auto' 'npm run serve' 'npm run browser-sync' ",
     "dev2": "concurrently --kill-others 'npm run serve' 'npm run analysis-auto' 'npm run browser-sync-wait' ",
     "init": "npm install && bower install",
+    "lint": "polymer lint",
     "serve": "polymer serve --port 8000 --open",
     "test": "wct --skip-selenium-install --configFile wct.conf.js"
   },
