@@ -4,22 +4,41 @@
 
 <!-- A Polymer wrapper around Dygraphs (http://dygraphs.com/)
 
-  Example with static parameters:
+Example with static parameters:
 
-    <dy-graphs data="data.csv" options='{"legend": "always","title": "MyTitle"}'></dy-graphs>
+```html
+  <dy-graphs data="data.csv" options='{"legend": "always","title": "MyTitle"}'></dy-graphs>
+```
 
-  Example with data-binding:
+Example with data-binding:
 
-    <dy-graphs data="{{data}}" options="{{options}}"></dygraphs>
+```html
+  <dy-graphs data="{{data}}" options="{{options}}"></dygraphs>
+```
 
-  Interact with dygraph object directly:
+Interact with dygraph object directly:
 
-    <dygraphs id="graph"></dygraphs>
-    <script>
-      var g = document.querySelector('#graph');
-      g.dygraph.resetZoom();
-    </script>
+```html
+  <dygraphs id="graph"></dygraphs>
+  <script>
+    var g = document.querySelector('#graph');
+    g.dygraph.resetZoom();
+  </script>
+```
+### Styling
 
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+--dy-graphs | Mixin for the host | `{}`
+--dy-graphs-chart | Mixin for the chart | `{}`
+--dy-graphs-chart-legend | Mixin for the chart legend  | `{}`
+--dy-graphs-chart-legend-item | Mixin for the chart legend item | `{}`
+--dy-graphs-chart-content | Mixin for the chart content | `{}`
+--dy-graphs-chart-wrapper | Mixin for the chart wrapper | `{}`
+
+@group Dy-Graphs
 @demo demo/index.html dy-graphs
 @demo demo/responsive.html dy-graphs responsive
 -->
@@ -228,10 +247,6 @@
           ]
         }
 
-        _dataChanged () {
-          this._debounceUpdateData()
-        }
-
         static get listeners () {
           return {
             'mouseenter': '_handleMouseenter',
@@ -258,6 +273,24 @@
           this._clicked = function (event) {}
         }
 
+        connectedCallback () {
+          super.connectedCallback()
+          this.async(this.notifyResize, 1)
+
+          this.async(() => {
+            this._isReady = true
+            this.fire('dy-graphs-ready')
+            this.debounce('update', this._createOrUpdate)
+          }, 10)
+        }
+
+        disconnectedCallback () {
+          super.disconnectedCallback()
+          if (this.dygraph) {
+            this.dygraph.destroy()
+          }
+        }
+
         get parent () {
           /*
           Implementation is copied from
@@ -279,6 +312,10 @@
           return this.parentNode
         }
 
+        _dataChanged () {
+          this._debounceUpdateData()
+        }
+
         _checkParentSize () {
           return this.parent && this.parent.offsetWidth > 0 && this.parent.offsetHeight > 0
         }
@@ -287,24 +324,6 @@
           if (this._checkParentSize()) {
             this._resizeDyGraph()
             this.debounce('update', this._createOrUpdate)
-          }
-        }
-
-        connectedCallback () {
-          super.connectedCallback()
-          this.async(this.notifyResize, 1)
-
-          this.async(() => {
-            this._isReady = true
-            this.fire('dy-graphs-ready')
-            this.debounce('update', this._createOrUpdate)
-          }, 10)
-        }
-
-        disconnectedCallback() {
-          super.disconnectedCallback()
-          if (this.dygraph) {
-            this.dygraph.destroy()
           }
         }
 
