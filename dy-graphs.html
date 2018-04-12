@@ -192,64 +192,71 @@
     'use strict';
 
     (function (scope) {
-      let DyGraphsElements = scope.DyGraphsElements = scope.DyGraphsElements || {}
+      // class DyGraphs extends Polymer.Element {
+      class DyGraphs extends Polymer.mixinBehaviors([Polymer.IronResizableBehavior], Polymer.Element) {
 
-      DyGraphsElements.DyGraphs = Polymer({
+        static get is () {
+          return 'dy-graphs'
+        }
 
-        is: 'dy-graphs',
+        static get properties () {
+          return {
 
-        properties: {
-          /**
-           * Options for configuring Dygraphs display and beheavior.
-           * For more information, see http://dygraphs.com/options.html
-           */
-          options: {
-            type: Object,
-            observer: '_debouceUpdateOptions'
-          },
+            /**
+             * Options for configuring Dygraphs display and beheavior.
+             * For more information, see http://dygraphs.com/options.html
+             */
+            options: {
+              type: Object,
+              observer: '_debouceUpdateOptions'
+            },
 
-          /**
-           * A file containing CSV data or a function that returns this data.
-           * The most basic expected format for each line is "YYYY/MM/DD,val1,val2,...".
-           * For more information, see http://dygraphs.com/data.html.
-           */
-          data: {
-            type: Object
+            /**
+             * A file containing CSV data or a function that returns this data.
+             * The most basic expected format for each line is "YYYY/MM/DD,val1,val2,...".
+             * For more information, see http://dygraphs.com/data.html.
+             */
+            data: {
+              type: Object
+            }
           }
-        },
+        }
 
-        observers: [
-          '_dataChanged(data.splices)'
-        ],
+        static get observers () {
+          return [
+            '_dataChanged(data.splices)'
+          ]
+        }
 
-        _dataChanged: function () {
+        _dataChanged () {
           this._debounceUpdateData()
-        },
+        }
 
-        behaviors: [
-          Polymer.IronResizableBehavior
-        ],
+        static get listeners () {
+          return {
+            'mouseenter': '_handleMouseenter',
+            'click': '_clicked',
+            'iron-resize': '_onIronResize'
+          }
+        }
 
-        listeners: {
-          'mouseenter': '_handleMouseenter',
-          'click': '_clicked',
-          'iron-resize': '_onIronResize'
-        },
+        constructor () {
+          super()
+          this._isReady = false
 
-        _isReady: false,
+          /**
+           * The underlying Dygraphs object.
+           * Use this to access the dygraphs native API.
+           * For more information, see http://dygraphs.com/jsdoc/symbols/Dygraph.html
+           */
+          this.dygraph = null
 
-        /**
-         * The underlying Dygraphs object.
-         * Use this to access the dygraphs native API.
-         * For more information, see http://dygraphs.com/jsdoc/symbols/Dygraph.html
-         */
-        dygraph: null,
+          /* default handler */
+          this._handleMouseenter = function (event) {}
 
-        /* default handler */
-        _handleMouseenter: function (event) {},
-
-        /* default handler */
-        _clicked: function (event) {},
+          /* default handler */
+          this._clicked = function (event) {}
+        }
 
         get parent () {
           /*
@@ -270,60 +277,62 @@
             return this.parentNode.host
           }
           return this.parentNode
-        },
+        }
 
-        _checkParentSize: function () {
+        _checkParentSize () {
           return this.parent && this.parent.offsetWidth > 0 && this.parent.offsetHeight > 0
-        },
+        }
 
-        _onIronResize: function () {
+        _onIronResize () {
           if (this._checkParentSize()) {
             this._resizeDyGraph()
             this.debounce('update', this._createOrUpdate)
           }
-        },
+        }
 
-        attached: function () {
+        connectedCallback () {
+          super.connectedCallback()
           this.async(this.notifyResize, 1)
 
-          this.async(function () {
+          this.async(() => {
             this._isReady = true
             this.fire('dy-graphs-ready')
             this.debounce('update', this._createOrUpdate)
           }, 10)
-        },
+        }
 
-        detached: function () {
+        disconnectedCallback() {
+          super.disconnectedCallback()
           if (this.dygraph) {
             this.dygraph.destroy()
           }
-        },
+        }
 
-        _resizeDyGraph: function () {
+        _resizeDyGraph () {
           if (this.dygraph) {
             this.dygraph.resize(-1, -1)
             this.dygraph.resize(0, 0)
           }
-        },
+        }
 
-        _setOptionAttribute: function (key, value) {
+        _setOptionAttribute (key, value) {
           this.options = this.options || {}
           this.options[key] = value
-        },
+        }
 
-        _debouceUpdateOptions: function () {
+        _debouceUpdateOptions () {
           this._setOptionAttribute('labelsDiv', this.$.legend)
           this.debounce('update', this._createOrUpdate)
-        },
+        }
 
-        _debounceUpdateData: function () {
+        _debounceUpdateData () {
           if (this.dygraph !== null) {
             this._setOptionAttribute('file', this.data)
           }
           this.debounce('update', this._createOrUpdate)
-        },
+        }
 
-        _createOrUpdate: function () {
+        _createOrUpdate () {
           this.cancelDebouncer('update')
           if (!this._isReady) {
             return
@@ -343,7 +352,12 @@
             })
           }
         }
-      })
+      }
+
+      customElements.define(DyGraphs.is, DyGraphs)
+      let DyGraphsElements = scope.DyGraphsElements = scope.DyGraphsElements || {}
+      DyGraphsElements.DyGraphs = DyGraphs
+
     })(window)
   </script>
 </dom-module>

@@ -50,11 +50,11 @@
       })
 
       test('has propety data', () => {
-        assert.property(el.properties, 'data')
+        assert.property(DyGraphsElements.DyGraphs.properties, 'data')
       })
 
       test('has propety options', () => {
-        assert.property(el.properties, 'options')
+        assert.property(DyGraphsElements.DyGraphs.properties, 'options')
       })
 
       test('_istReady is false', () => {
@@ -63,16 +63,19 @@
       })
     })
 
-    suite('attached', () => {
-      test('calls notifyResize', () => {
+    suite('connectedCallback', () => {
+      test('calls notifyResize', (done) => {
         let sandbox = sinon.sandbox.create()
-        sandbox.stub(DyGraphsElements.DyGraphs.prototype, 'notifyResize')
         el = fixture('fixture')
-        sinon.assert.calledOnce(DyGraphsElements.DyGraphs.prototype.notifyResize)
-        sandbox.restore()
+        let spyNotifyResize = sinon.spy(el, 'notifyResize')
+        requestAnimationFrame(() => {
+          assert.isFalse(spyNotifyResize.calledOnce);
+          sandbox.restore()
+          done()
+        })
       })
 
-      test('attached sets _isReady to true', (done) => {
+      test('connectedCallback sets _isReady to true', (done) => {
         assert.isFalse(el._isReady, 'dy-graphs._isReady should be false by default and set when the element is ready')
         el.addEventListener('dy-graphs-ready', () => {
           assert.isTrue(el._isReady, 'dy-graphs._isReady should be false by default and set when the element is ready')
@@ -94,13 +97,13 @@
       })
     })
 
-    suite('detached', () => {
+    suite('disconnectedCallback', () => {
       test('destroys the dygraph', (done) => {
         let sandbox = sinon.sandbox.create()
         sandbox.stub(Dygraph.prototype, 'destroy')
         // setupFixtureElement()
         let wrapper = fixture('fixtureSized')
-        el = wrapper.querySelector("dy-graphs")
+        el = wrapper.querySelector('dy-graphs')
         el.set('data', [[new Date('2018/04/03 00:00'), 1, 2]])
         el.addEventListener('dy-graphs-created', () => {
           el.remove()
@@ -127,7 +130,7 @@
         let sandbox = sinon.sandbox.create()
         sandbox.stub(Dygraph.prototype, 'resize')
         let wrapper = fixture('fixtureSized')
-        el = wrapper.querySelector("dy-graphs")
+        el = wrapper.querySelector('dy-graphs')
         el.set('data', [[new Date('2018/04/03 00:00'), 1, 2]])
         el.addEventListener('dy-graphs-created', () => {
           el._resizeDyGraph()
@@ -171,7 +174,7 @@
         sandbox.stub(Dygraph.prototype, 'updateOptions')
 
         let wrapper = fixture('fixtureSized')
-        el = wrapper.querySelector("dy-graphs")
+        el = wrapper.querySelector('dy-graphs')
         el.set('data', [[new Date('2018/04/03 00:00'), 1, 2]])
         el.addEventListener('dy-graphs-created', () => {
           el.set('data', [new Date('2018/04/03 01:00'), 3, 4])
@@ -182,7 +185,7 @@
           })
         })
         el.set('data', [[new Date('2018/04/03 00:00'), 1, 2]])
-      //
+        //
       })
     })
 
@@ -194,7 +197,7 @@
 
       test('returns true if the parent is visible/sized', (done) => {
         let wrapper = fixture('fixtureSized')
-        el = wrapper.querySelector("dy-graphs")
+        el = wrapper.querySelector('dy-graphs')
         // setupFixtureElement()
         requestAnimationFrame(() => {
           assert.isTrue(el._checkParentSize())
@@ -204,16 +207,16 @@
     })
 
     suite('date as data value', () => {
-        test('chart is created even if the data is just a date', (done) => {
-          let wrapper = fixture('fixtureSized')
-          el = wrapper.querySelector("dy-graphs")
-          el.set('data', [[new Date('2018/04/03 00:00')]])
-          el.addEventListener('dy-graphs-created', () => {
-            requestAnimationFrame(() => {
-              done()
-            })
+      test('chart is created even if the data is just a date', (done) => {
+        let wrapper = fixture('fixtureSized')
+        el = wrapper.querySelector('dy-graphs')
+        el.set('data', [[new Date('2018/04/03 00:00')]])
+        el.addEventListener('dy-graphs-created', () => {
+          requestAnimationFrame(() => {
+            done()
           })
         })
+      })
     })
 
     // suite('document fragement', () => {
