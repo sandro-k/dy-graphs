@@ -252,6 +252,20 @@
         _clicked: function (event) {},
 
         get parent () {
+          /*
+          Implementation is copied from
+          https://github.com/PolymerElements/iron-resizable-behavior/blob/master/demo/src/x-app.html#L48
+          and altered to check if this.parentNode exists. Not sure how a documentFragment has to be constructed to be
+          the parent of this element.
+
+          let frag = document.createDocumentFragment()
+          let el = document.createElement('dy-graphs')
+          frag.appendChild(el)
+
+          is not working. Therefor lets ignore it for the coverage
+          */
+
+          /* istanbul ignore if */
           if (this.parentNode && this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
             return this.parentNode.host
           }
@@ -280,7 +294,6 @@
         },
 
         detached: function () {
-          console.log('detached', arguments)
           if (this.dygraph) {
             this.dygraph.destroy()
           }
@@ -316,10 +329,7 @@
             return
           }
           if (this.dygraph !== null) {
-
-            if (this.data !== null) {
-              this._setOptionAttribute('file', this.data)
-            }
+            this._setOptionAttribute('file', this.data)
             this.dygraph.updateOptions(this.options)
           } else if (this.data && this._checkParentSize()) {
             this.dygraph = new Dygraph(this.$.chart, this.data, this.options)
