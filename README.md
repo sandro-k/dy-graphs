@@ -4,7 +4,13 @@
 This is a simple Polymer custom element wrapper around [Dygraphs](http://dygraphs.com/)
 
 ## Demo
-> [Check it live](http://timeu.github.io/dy-graphs/components/dy-graphs/demo/index.html).
+> [Check it live](https://sandro-k.github.io/dy-graphs/bower_components/dy-graphs/#/elements/dy-graphs/demos/dy-graphs).
+
+## Documentation
+> [Component Documentation](https://sandro-k.github.io/dy-graphs/bower_components/dy-graphs/#/elements/dy-graphs)
+
+## Code Coverage
+> [Coverage](https://sandro-k.github.io/dy-graphs/bower_components/dy-graphs/coverage/lcov-report/index.html)
 
 ## Install
 
@@ -82,6 +88,25 @@ npm run dev
 
 Browse to http://localhost:8000/components/dy-graphs/ to preview the element documentation. To have [Browsersync](https://browsersync.io/) support, while developing on the element open up
 [http://localhost:3000/components/dy-graphs/](http://localhost:3000/components/dy-graphs/)
+
+
+## GH-Pages
+
+A live demo, documentation and code coverage of this element is published on [https://sandro-k.github.io/dy-graphs/](https://sandro-k.github.io/dy-graphs/bower_components/dy-graphs/#/elements/dy-graphs)
+
+### Publish/Update GH-Pages
+
+```sh
+git checkout gh-pages
+bower install
+cd bower_components/dy-graphs
+bower install
+npm install
+npm run test
+git add .
+git commit -m "update gh-pages"
+git push
+```
 
 ## Contributing
 
