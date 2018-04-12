@@ -250,8 +250,7 @@ Custom property | Description | Default
         static get listeners () {
           return {
             'mouseenter': '_handleMouseenter',
-            'click': '_clicked',
-            'iron-resize': '_onIronResize'
+            'click': '_clicked'
           }
         }
 
@@ -271,10 +270,20 @@ Custom property | Description | Default
 
           /* default handler */
           this._clicked = function (event) {}
+
+          this._boundIronResizeListener = this._onIronResize.bind(this)
+        }
+
+        ready () {
+          super.ready()
         }
 
         connectedCallback () {
           super.connectedCallback()
+          // Add an event listener for iron-resize events from the Polymer.IronResizableBehavior
+          // https://www.polymer-project.org/2.0/docs/devguide/events#imperative-listeners
+          this.addEventListener('iron-resize', this._boundIronResizeListener)
+
           this.async(this.notifyResize, 1)
 
           this.async(() => {
@@ -286,6 +295,10 @@ Custom property | Description | Default
 
         disconnectedCallback () {
           super.disconnectedCallback()
+          // Remove an event listener for iron-resize events from the Polymer.IronResizableBehavior
+          // https://www.polymer-project.org/2.0/docs/devguide/events#imperative-listeners
+          this.removeEventListener('iron-resize', this._boundIronResizeListener)
+
           if (this.dygraph) {
             this.dygraph.destroy()
           }
