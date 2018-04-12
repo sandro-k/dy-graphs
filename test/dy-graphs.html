@@ -15,9 +15,34 @@
     <dy-graphs></dy-graphs>
   </template>
 </test-fixture>
+
+<test-fixture id="fixtureSized" style="display: block; height: 100px; width: 100px">
+  <template>
+    <div style="display: block; height: 100px; width: 100px">
+      <dy-graphs></dy-graphs>
+    </div>
+  </template>
+</test-fixture>
+
+<test-fixture id="fixtureFrag" style="display: block; height: 100px; width: 100px">
+  <template>
+    <div style="display: block; height: 100px; width: 100px">
+    </div>
+  </template>
+</test-fixture>
+
+
 <script>
   suite('<dy-graphs>', () => {
-    let el
+    var el
+
+    let setupFixtureElement = () => {
+      let fixtureEl = document.querySelector('#fixture')
+      // dy-graphs only creates the dygraph if the parent is visible
+      fixtureEl.style.display = 'block'
+      fixtureEl.style.width = '100px'
+      fixtureEl.style.height = '100px'
+    }
 
     suite('properties', () => {
       setup(() => {
@@ -31,17 +56,180 @@
       test('has propety options', () => {
         assert.property(el.properties, 'options')
       })
+
+      test('_istReady is false', () => {
+        assert.property(el, '_isReady')
+        assert.isFalse(el._isReady, 'dy-graphs._isReady should be false by default and set when the element is ready')
+      })
     })
 
     suite('attached', () => {
-        test('calls notifyResize', () => {
-          let sandbox = sinon.sandbox.create()
-          sandbox.stub(DyGraphsElements.DyGraphs.prototype, "notifyResize")
-          el = fixture('fixture')
-          sinon.assert.calledOnce(DyGraphsElements.DyGraphs.prototype.notifyResize);
+      test('calls notifyResize', () => {
+        let sandbox = sinon.sandbox.create()
+        sandbox.stub(DyGraphsElements.DyGraphs.prototype, 'notifyResize')
+        el = fixture('fixture')
+        sinon.assert.calledOnce(DyGraphsElements.DyGraphs.prototype.notifyResize)
+        sandbox.restore()
+      })
+
+      test('attached sets _isReady to true', (done) => {
+        assert.isFalse(el._isReady, 'dy-graphs._isReady should be false by default and set when the element is ready')
+        el.addEventListener('dy-graphs-ready', () => {
+          assert.isTrue(el._isReady, 'dy-graphs._isReady should be false by default and set when the element is ready')
+          done()
+        })
+      })
+
+      test('calls _createOrUpdate to create the dygraph object', (done) => {
+        let sandbox = sinon.sandbox.create()
+        sandbox.stub(DyGraphsElements.DyGraphs.prototype, '_createOrUpdate')
+        el = fixture('fixture')
+        el.addEventListener('dy-graphs-ready', () => {
+          requestAnimationFrame(() => {
+            sinon.assert.calledOnce(DyGraphsElements.DyGraphs.prototype._createOrUpdate)
+            sandbox.restore()
+            done()
+          })
+        })
+      })
+    })
+
+    suite('detached', () => {
+      test('destroys the dygraph', (done) => {
+        let sandbox = sinon.sandbox.create()
+        sandbox.stub(Dygraph.prototype, 'destroy')
+        // setupFixtureElement()
+        let wrapper = fixture('fixtureSized')
+        el = wrapper.querySelector("dy-graphs")
+        el.set('data', [[new Date('2018/04/03 00:00'), 1, 2]])
+        el.addEventListener('dy-graphs-created', () => {
+          el.remove()
+          requestAnimationFrame(() => {
+            sinon.assert.calledOnce(Dygraph.prototype.destroy)
+            sandbox.restore()
+            done()
+          })
+        })
+      })
+    })
+
+    suite('_resizeDyGraph', () => {
+      test('is not calling Dygraph.resize if dy-graphs.dygraph is not defined', () => {
+        let sandbox = sinon.sandbox.create()
+        sandbox.stub(Dygraph.prototype, 'resize')
+        el = fixture('fixture')
+        el._resizeDyGraph()
+        sinon.assert.notCalled(Dygraph.prototype.resize)
+        sandbox.restore()
+      })
+
+      test('is calling Dygraph.resize twice if el.dygraph is defined', (done) => {
+        let sandbox = sinon.sandbox.create()
+        sandbox.stub(Dygraph.prototype, 'resize')
+        let wrapper = fixture('fixtureSized')
+        el = wrapper.querySelector("dy-graphs")
+        el.set('data', [[new Date('2018/04/03 00:00'), 1, 2]])
+        el.addEventListener('dy-graphs-created', () => {
+          el._resizeDyGraph()
+          sinon.assert.calledTwice(Dygraph.prototype.resize)
           sandbox.restore()
+          done()
+        })
+
+      })
+    })
+
+    suite('options', () => {
+      test('changing options is calling dy-graphs._debouceUpdateOptions', (done) => {
+        let sandbox = sinon.sandbox.create()
+        sandbox.stub(DyGraphsElements.DyGraphs.prototype, '_debouceUpdateOptions')
+        el = fixture('fixture')
+        el.set('options', {'legend': 'always'})
+        requestAnimationFrame(() => {
+          sinon.assert.calledOnce(DyGraphsElements.DyGraphs.prototype._debouceUpdateOptions)
+          sandbox.restore()
+          done()
+        })
+      })
+    })
+
+    suite('data', () => {
+      test('changing data is calling dy-graphs._debounceUpdateData', (done) => {
+        let sandbox = sinon.sandbox.create()
+        sandbox.stub(DyGraphsElements.DyGraphs.prototype, '_debounceUpdateData')
+        el = fixture('fixture')
+        el.set('data', [[new Date('2018/04/03 00:00'), 1, 2]])
+        requestAnimationFrame(() => {
+          sinon.assert.calledOnce(DyGraphsElements.DyGraphs.prototype._debounceUpdateData)
+          sandbox.restore()
+          done()
+        })
+      })
+
+      test('dygraph is updated with new data', (done) => {
+        let sandbox = sinon.sandbox.create()
+        sandbox.stub(Dygraph.prototype, 'updateOptions')
+
+        let wrapper = fixture('fixtureSized')
+        el = wrapper.querySelector("dy-graphs")
+        el.set('data', [[new Date('2018/04/03 00:00'), 1, 2]])
+        el.addEventListener('dy-graphs-created', () => {
+          el.set('data', [new Date('2018/04/03 01:00'), 3, 4])
+          // el.push('data', [new Date('2018/04/03 01:00'), 3, 4])
+          requestAnimationFrame(() => {
+            sinon.assert.calledOnce(Dygraph.prototype.updateOptions)
+            done()
+          })
+        })
+        el.set('data', [[new Date('2018/04/03 00:00'), 1, 2]])
+      //
+      })
+    })
+
+    suite('_checkParentSize', () => {
+      test('returns false if the parent is not visible/sized', () => {
+        el = fixture('fixture')
+        assert.isFalse(el._checkParentSize())
+      })
+
+      test('returns true if the parent is visible/sized', (done) => {
+        let wrapper = fixture('fixtureSized')
+        el = wrapper.querySelector("dy-graphs")
+        // setupFixtureElement()
+        requestAnimationFrame(() => {
+          assert.isTrue(el._checkParentSize())
+          done()
+        })
+      })
+    })
+
+    suite('date as data value', () => {
+        test('chart is created even if the data is just a date', (done) => {
+          let wrapper = fixture('fixtureSized')
+          el = wrapper.querySelector("dy-graphs")
+          el.set('data', [[new Date('2018/04/03 00:00')]])
+          el.addEventListener('dy-graphs-created', () => {
+            requestAnimationFrame(() => {
+              done()
+            })
+          })
         })
     })
+
+    // suite('document fragement', () => {
+    //     test('', () => {
+    //       let fragWrapper = document.createDocumentFragment()
+    //       let frag = document.createDocumentFragment()
+    //       let template = document.createElement('template')
+    //       let el = document.createElement('dy-graphs')
+    //       fragWrapper.appendChild(frag)
+    //       template.appendChild(el)
+    //       frag.appendChild(template)
+    //       let wrapper = fixture('fixtureFrag')
+    //       wrapper.appendChild(fragWrapper)
+    //       assert.equal(frag.childNodes.length, 1)
+    //     })
+    // })
 
   })
 </script>
