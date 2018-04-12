@@ -1,0 +1,4 @@
+/node_modules
+/bower_components/dy-graphs/node_modules
+/bower_components/dy-graphs/bower_components
+/.idea
