@@ -1,0 +1,41 @@
+{
+  "name": "dy-graphs",
+  "version": "2.0.0",
+  "description": "Polymer custom element wrapper around dygraphs.com",
+  "main": "index.html",
+  "scripts": {
+    "analysis": "polymer analyze dy-graphs.html > analysis.json",
+    "analysis-auto": "nodemon --exec 'npm run analysis'",
+    "browser-sync": "browser-sync start --start-path '/components/dy-graphs/#/elements/dy-graphs' --proxy localhost:8000 --files '*.html' 'demp/*.html'",
+    "browser-sync-wait": "wait-on http://localhost:8000 && npm run browser-sync",
+    "dev": "concurrently --kill-others 'npm run analysis-auto' 'npm run serve' 'npm run browser-sync' ",
+    "dev2": "concurrently --kill-others 'npm run serve' 'npm run analysis-auto' 'npm run browser-sync-wait' ",
+    "init": "npm install && bower install",
+    "lint": "polymer lint",
+    "serve": "polymer serve --port 8000 --open",
+    "test": "wct --skip-selenium-install --configFile wct.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandro-k/dy-graphs.git"
+  },
+  "keywords": [
+    "dygraphs",
+    "Polymer",
+    "dy-graphs"
+  ],
+  "author": "Sandro Kock <sandro.kock@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sandro-k/dy-graphs/issues"
+  },
+  "homepage": "https://github.com/sandro-k/dy-graphs#readme",
+  "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.3",
+    "wait-on": "^2.1.0",
+    "wct-istanbub": "^0.1.1",
+    "web-component-tester": "^6.6.0-pre.3"
+  }
+}
