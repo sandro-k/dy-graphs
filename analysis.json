@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "elements": [
     {
-      "description": "A Polymer wrapper around Dygraphs (http://dygraphs.com/)\n\n  Example with static parameters:\n\n    <dy-graphs data=\"data.csv\" options='{\"legend\": \"always\",\"title\": \"MyTitle\"}'></dy-graphs>\n\n  Example with data-binding:\n\n    <dy-graphs data=\"{{data}}\" options=\"{{options}}\"></dygraphs>\n\n  Interact with dygraph object directly:\n\n    <dygraphs id=\"graph\"></dygraphs>\n    <script>\n      var g = document.querySelector('#graph');\n      g.dygraph.resetZoom();\n    </script>\n\nclass DyGraphs extends Polymer.Element {",
+      "description": "A Polymer wrapper around Dygraphs (http://dygraphs.com/)\n\nExample with static parameters:\n\n```html\n  <dy-graphs data=\"data.csv\" options='{\"legend\": \"always\",\"title\": \"MyTitle\"}'></dy-graphs>\n```\n\nExample with data-binding:\n\n```html\n  <dy-graphs data=\"{{data}}\" options=\"{{options}}\"></dygraphs>\n```\n\nInteract with dygraph object directly:\n\n```html\n  <dygraphs id=\"graph\"></dygraphs>\n  <script>\n    var g = document.querySelector('#graph');\n    g.dygraph.resetZoom();\n  </script>\n```\n### Styling\n\nThe following custom properties and mixins are available for styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n--dy-graphs | Mixin for the host | `{}`\n--dy-graphs-chart | Mixin for the chart | `{}`\n--dy-graphs-chart-legend | Mixin for the chart legend  | `{}`\n--dy-graphs-chart-legend-item | Mixin for the chart legend item | `{}`\n--dy-graphs-chart-content | Mixin for the chart content | `{}`\n--dy-graphs-chart-wrapper | Mixin for the chart wrapper | `{}`\n\nclass DyGraphs extends Polymer.Element {",
       "summary": "",
       "path": "dy-graphs.html",
       "properties": [
@@ -13,11 +13,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 208,
+              "line": 227,
               "column": 12
             },
             "end": {
-              "line": 211,
+              "line": 230,
               "column": 13
             }
           },
@@ -34,11 +34,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 218,
+              "line": 237,
               "column": 12
             },
             "end": {
-              "line": 220,
+              "line": 239,
               "column": 13
             }
           },
@@ -49,67 +49,16 @@
       ],
       "methods": [
         {
-          "name": "_dataChanged",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 230,
-              "column": 8
-            },
-            "end": {
-              "line": 232,
-              "column": 9
-            }
-          },
-          "metadata": {},
-          "params": []
-        },
-        {
-          "name": "_checkParentSize",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 281,
-              "column": 8
-            },
-            "end": {
-              "line": 283,
-              "column": 9
-            }
-          },
-          "metadata": {},
-          "params": []
-        },
-        {
-          "name": "_onIronResize",
-          "description": "",
-          "privacy": "protected",
-          "sourceRange": {
-            "start": {
-              "line": 285,
-              "column": 8
-            },
-            "end": {
-              "line": 290,
-              "column": 9
-            }
-          },
-          "metadata": {},
-          "params": []
-        },
-        {
           "name": "connectedCallback",
           "description": "",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 292,
+              "line": 275,
               "column": 8
             },
             "end": {
-              "line": 301,
+              "line": 284,
               "column": 9
             }
           },
@@ -122,11 +71,62 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 303,
+              "line": 286,
               "column": 8
             },
             "end": {
-              "line": 308,
+              "line": 291,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_dataChanged",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 314,
+              "column": 8
+            },
+            "end": {
+              "line": 316,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_checkParentSize",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 318,
+              "column": 8
+            },
+            "end": {
+              "line": 320,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "params": []
+        },
+        {
+          "name": "_onIronResize",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 322,
+              "column": 8
+            },
+            "end": {
+              "line": 327,
               "column": 9
             }
           },
@@ -139,11 +139,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 310,
+              "line": 329,
               "column": 8
             },
             "end": {
-              "line": 315,
+              "line": 334,
               "column": 9
             }
           },
@@ -156,11 +156,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 317,
+              "line": 336,
               "column": 8
             },
             "end": {
-              "line": 320,
+              "line": 339,
               "column": 9
             }
           },
@@ -180,11 +180,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 322,
+              "line": 341,
               "column": 8
             },
             "end": {
-              "line": 325,
+              "line": 344,
               "column": 9
             }
           },
@@ -197,11 +197,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 327,
+              "line": 346,
               "column": 8
             },
             "end": {
-              "line": 332,
+              "line": 351,
               "column": 9
             }
           },
@@ -214,11 +214,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 334,
+              "line": 353,
               "column": 8
             },
             "end": {
-              "line": 353,
+              "line": 372,
               "column": 9
             }
           },
@@ -240,11 +240,11 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 195,
+          "line": 214,
           "column": 6
         },
         "end": {
-          "line": 354,
+          "line": 373,
           "column": 7
         }
       },
@@ -257,11 +257,11 @@
           "description": "Options for configuring Dygraphs display and beheavior.\nFor more information, see http://dygraphs.com/options.html",
           "sourceRange": {
             "start": {
-              "line": 208,
+              "line": 227,
               "column": 12
             },
             "end": {
-              "line": 211,
+              "line": 230,
               "column": 13
             }
           },
@@ -273,11 +273,11 @@
           "description": "A file containing CSV data or a function that returns this data.\nThe most basic expected format for each line is \"YYYY/MM/DD,val1,val2,...\".\nFor more information, see http://dygraphs.com/data.html.",
           "sourceRange": {
             "start": {
-              "line": 218,
+              "line": 237,
               "column": 12
             },
             "end": {
-              "line": 220,
+              "line": 239,
               "column": 13
             }
           },
