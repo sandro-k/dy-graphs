@@ -2,3 +2,4 @@ bower_components
 /.bowerrc
 /node_modules
 /.idea
+/coverage
