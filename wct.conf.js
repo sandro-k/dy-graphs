@@ -14,11 +14,11 @@ module.exports = {
       ],
       writeOnlyOnSuccess: false,
       include: [
-        '**/*.html',
-        '*.html'
+        'dy-graphs.html'
       ],
       exclude: [
-        '**/test/**'
+        '**/test/**',
+        'bower_components/**'
       ],
       thresholds: {
         global: {
