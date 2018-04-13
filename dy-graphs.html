@@ -238,6 +238,11 @@ Custom property | Description | Default
              */
             data: {
               type: Object
+            },
+
+            resizeDebounceTime: {
+              type: Number,
+              value: 100
             }
           }
         }
@@ -291,7 +296,7 @@ Custom property | Description | Default
             this._isReady = true
             this.fire('dy-graphs-ready')
             this.debounce('update', this._createOrUpdate)
-          }, 10)
+          }, this.resizeDebounceTime)
         }
 
         disconnectedCallback () {
