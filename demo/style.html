@@ -1,0 +1,136 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>dy-graphs Style Demo</title>
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <link rel="import" href="../dy-graphs.html">
+  <custom-style>
+    <style>
+      dy-graphs {
+        --dy-graphs: {
+          background: #d4d339;
+        };
+        --dy-graphs-chart: {
+          background: #84b7c0;
+        };
+        --dy-graphs-chart-legend: {
+          background: #e9d062;
+        };
+        --dy-graphs-chart-legend-item: {
+          background: #e55312;
+        };
+        --dy-graphs-chart-content: {
+          background: #df422a;
+        };
+        --dy-graphs-chart-wrapper: {
+          background: #1bec68;
+        };
+        --dy-graphs-chart-legend: {
+          background: #ffb600;
+        };
+        --dy-graphs-chart-legend-line: {
+          background: #ec1b1b;
+        };
+        --dy-graphs-chart-legend-dash: {
+          background: #6086bf;
+        };
+        --dy-graphs-chart-roller: {
+          background: lightblue;
+        };
+        --dy-graphs-chart-annotation: {
+          background: lightgreen;
+        };
+        --dy-graphs-chart-default-annotation: {
+          background: lightcoral;
+        };
+        --dy-graphs-chart-label: {
+          background: lightgoldenrodyellow;
+        };
+        --dy-graphs-chart-ylabel: {
+          background: red;
+        };
+        --dy-graphs-chart-y2label: {
+          background: cyan;
+        };
+        --dy-graphs-chart-axis-label: {
+          background: mediumvioletred;
+        };
+        --dy-graphs-chart-axis-label-x: {
+          background: magenta;
+        };
+        --dy-graphs-chart-axis-label-y: {
+          background: blueviolet;
+        };
+        --dy-graphs-chart-axis-label-y2: {
+          background: aquamarine;
+        };
+        --dy-graphs-chart-title: {
+          background: chartreuse;
+        };
+        --dy-graphs-chart-xlabel: {
+          background: cadetblue;
+        };
+        --dy-graphs-chart-label-rotate-left: {
+          background: chocolate;
+        };
+        --dy-graphs-chart-label-rotate-right: {
+          background: cornflowerblue;
+        };
+      }
+    </style>
+  </custom-style>
+</head>
+<body>
+
+<p>An example of <code>&lt;dy-graphs &gt;</code>:</p>
+
+<dy-graphs></dy-graphs>
+
+<script>
+  let el = document.querySelector('dy-graphs')
+  let options = {
+    'legend': 'always',
+    'drawPoints': true,
+    'pointSize': 4,
+    'showRoller': true,
+    'ylabel': 'Y LABEL',
+    'y2label': 'Y2 LABEL',
+    'labels': ['Date', 'LABEL 1', 'LABEL 2', 'LABEL 3'],
+    series: {
+      'LABEL 3': {
+        axis: 'y2'
+      }
+    },
+    'labelsDiv': {},
+    'interactionModel': {}
+  }
+
+  let data = [
+    [new Date('2018/04/03 00:00'), 10, 11, 1],
+    [new Date('2018/04/03 03:00'), 20, 25, 1],
+    [new Date('2018/04/03 06:00'), 22, 27, 1],
+    [new Date('2018/04/03 09:00'), 25, 30, 1],
+    [new Date('2018/04/03 12:00'), 30, 33, 1],
+    [new Date('2018/04/03 18:00'), 29, 25, 1],
+    [new Date('2018/04/03 21:00'), 10, 15, 1],
+    [new Date('2018/04/04 00:00'), 11, 20, 1],
+    [new Date('2018/04/04 03:00'), 15, 30, 1],
+  ]
+
+  el.options = options
+  el.data = data
+
+</script>
+</body>
+</html>
