@@ -13,7 +13,12 @@
     "init": "npm install && bower install",
     "lint": "polymer lint",
     "serve": "polymer serve --port 8000 --open",
-    "test": "wct --skip-selenium-install --configFile wct.conf.js"
+    "test": "wct --skip-selenium-install --configFile wct.conf.js",
+    "echo": "echo $env ${polymerPort:-1233}",
+    "check": "npm-check-updates --packageManager bower"
+  },
+  "config": {
+    "polymerPort": "8080"
   },
   "repository": {
     "type": "git",
@@ -34,6 +39,7 @@
     "browser-sync": "^2.23.6",
     "concurrently": "^3.5.1",
     "nodemon": "^1.17.3",
+    "npm-check-updates": "^2.14.2",
     "wait-on": "^2.1.0",
     "wct-istanbub": "^0.1.1",
     "web-component-tester": "^6.6.0-pre.3"
